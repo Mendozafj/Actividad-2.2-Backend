@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profesores y sus Materias</title>
+</head>
+<body>
+    <h1>Profesores y sus Materias</h1>
+    <% if (profesores && profesores.length > 0) { %>
+        <% profesores.forEach(profesor => { %>
+            <div>
+                <h2><%= profesor.nombre %> <%= profesor.apellido %></h2>
+                <% if (profesor.materias && profesor.materias.length > 0) { %>
+                    <ul>
+                        <% profesor.materias.forEach(materia => { %>
+                            <li>
+                                <strong>Materia:</strong> <%= materia.materia %><br>
+                                <strong>Descripción:</strong> <%= materia.descripcion %>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+                    <p>Este profesor no tiene materias asociadas.</p>
+                <% } %>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <p>No hay profesores registrados o no tienen materias asociadas.</p>
+    <% } %>
+</body>
+</html>

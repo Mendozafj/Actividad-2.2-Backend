@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos de la Semana</title>
+    <link rel="stylesheet" href="/path/to/your/css/styles.css">
+</head>
+<body>
+    <h1>Eventos de la Materia: <%= materia.materia %></h1>
+    <h2>Eventos para la semana del <%= fechaInicio %> al <%= fechaFin %>:</h2>
+    <% if(eventos.length > 0) { %>
+        <ul>
+            <% eventos.forEach(evento => { %>
+                <li>
+                    <h3><%= evento.tipo %></h3>
+                    <p>Descripción: <%= evento.descripcion %></p>
+                    <p>Fecha: <%= new Date(evento.fecha).toLocaleDateString() %></p>
+                    <p>Detalles: <%= evento.detalles %></p>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>No hay eventos programados para esta semana.</p>
+    <% } %>
+</body>
+</html>
