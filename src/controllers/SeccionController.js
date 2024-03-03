@@ -1,4 +1,4 @@
-import { SeccionesModelo } from '../models-copy/SeccionesModelo.js';
+import { SeccionesModelo } from '../models/SeccionesModelo.js';
 
 export class SeccionController {
     static async agregar(req, res) {

@@ -2,9 +2,9 @@ import dayjs from "dayjs";
 import weekOfYear from "dayjs/plugin/weekOfYear.js";
 dayjs.extend(weekOfYear);
 
-import { EventosModelo } from "../models-copy/EventosModelo.js";
-import { ProfesoresModelo } from '../models-copy/ProfesoresModelo.js';
-import { MateriasModelo } from '../models-copy/MateriasModelo.js';
+import { EventosModelo } from "../models/EventosModelo.js";
+import { ProfesoresModelo } from '../models/ProfesoresModelo.js';
+import { MateriasModelo } from '../models/MateriasModelo.js';
 
 export class MateriaController {
   static async agregar(req, res) {

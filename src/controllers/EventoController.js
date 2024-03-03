@@ -1,6 +1,6 @@
-import { EventosModelo } from '../models-copy/EventosModelo.js';
-import { ProfesoresModelo } from '../models-copy/ProfesoresModelo.js';
-import { MateriasModelo } from '../models-copy/MateriasModelo.js';
+import { EventosModelo } from '../models/EventosModelo.js';
+import { ProfesoresModelo } from '../models/ProfesoresModelo.js';
+import { MateriasModelo } from '../models/MateriasModelo.js';
 
 export class EventoController {
   static async agregar(req, res) {

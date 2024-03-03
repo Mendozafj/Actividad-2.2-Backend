@@ -1,6 +1,5 @@
-import { Profesor } from "../models/ProfesorModelo.js";
-import { MateriasModelo } from '../models-copy/MateriasModelo.js';
-import { ProfesoresModelo } from '../models-copy/ProfesoresModelo.js';
+import { MateriasModelo } from '../models/MateriasModelo.js';
+import { ProfesoresModelo } from '../models/ProfesoresModelo.js';
 
 export class ProfesorController {
 
