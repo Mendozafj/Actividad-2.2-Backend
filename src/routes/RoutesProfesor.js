@@ -16,6 +16,6 @@ router.put('/profesores/:id', ProfesorController.actualizar); // Funciona con la
 
 router.delete('/profesores/:id', ProfesorController.eliminar); // Funciona con la base de datos
 
-router.delete('/profesores/:id/asociado/materias', ProfesorController.eliminarAsociacionProfesorMateria);
+router.delete('/profesores/:id/asociado/materias', ProfesorController.eliminarAsociacionProfesorMateria); // Funciona con la base de datos
 
 export default router;

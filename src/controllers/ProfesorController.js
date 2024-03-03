@@ -1,5 +1,5 @@
 import { Profesor } from "../models/ProfesorModelo.js";
-import { Materia } from "../models/MateriaModelo.js";
+import { MateriasModelo } from '../models-copy/MateriasModelo.js';
 import { ProfesoresModelo } from '../models-copy/ProfesoresModelo.js';
 
 export class ProfesorController {
@@ -83,14 +83,22 @@ export class ProfesorController {
     }
   }
 
-  static listarProfesoresConMaterias(req, res) {
+  static async listarProfesoresConMaterias(req, res) {
     try {
-      const profesoresConMaterias = Profesor.profesores.map((profesor) => {
-        const materias = Materia.listar().filter(
-          (materia) => materia.profesorId === profesor.id
-        );
-        return { ...profesor, materias };
-      });
+      const profesores = await ProfesoresModelo.find();
+      const profesoresConMaterias = []
+      
+      for (let i = 0; i < profesores.length; i++) {
+        const materiasAsociadas = await MateriasModelo.find({ profesorId: profesores[i]._id })
+        const relacion = {
+          profesorAsociado: profesores[i],
+          materiasAsociadas
+        }
+
+        console.log(materiasAsociadas)
+        profesoresConMaterias.push(relacion)
+      }
+
       res.render('profesoresMaterias', { profesores: profesoresConMaterias });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -101,19 +109,17 @@ export class ProfesorController {
     const { id } = req.params;
 
     try {
-      const materiasAsociadas = Materia.listar().filter(
-        (materia) => materia.profesorId === id
-      );
+      const materiasAsociadas = await MateriasModelo.find({ profesorId: id })
 
       if (materiasAsociadas.length === 0) {
         return res.status(404).json({ message: "Profesor no encontrado en Materias Asociadas." });
       }
 
-      materiasAsociadas.forEach((materia) => {
-        Materia.eliminar(materia.id);
-      });
+      for (let i = 0; i < materiasAsociadas.length; i++) {
+        await MateriasModelo.findByIdAndDelete(materiasAsociadas[i]._id);
+      }
 
-      const profesorEliminado = Profesor.eliminar(id);
+      const profesorEliminado = await ProfesoresModelo.findByIdAndDelete(id);
       if (!profesorEliminado) {
         return res.status(404).json({ message: "Profesor no encontrado." });
       }

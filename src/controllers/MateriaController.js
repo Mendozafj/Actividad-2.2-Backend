@@ -2,8 +2,7 @@ import dayjs from "dayjs";
 import weekOfYear from "dayjs/plugin/weekOfYear.js";
 dayjs.extend(weekOfYear);
 
-import { Profesor } from "../models/ProfesorModelo.js";
-import { Evento } from "../models/EventoModelo.js";
+import { EventosModelo } from "../models-copy/EventosModelo.js";
 import { ProfesoresModelo } from '../models-copy/ProfesoresModelo.js';
 import { MateriasModelo } from '../models-copy/MateriasModelo.js';
 
@@ -168,12 +167,12 @@ export class MateriaController {
         .format("YYYY-MM-DD");
       const fechaFinSemana = dayjs(fechaConsulta).endOf("week").format("YYYY-MM-DD");
 
-      const materiaExistente = await Materia.buscarPorId(id);
+      const materiaExistente = await MateriasModelo.findById(id);
       if (!materiaExistente) {
         return res.status(404).json({ message: "Materia no encontrada." });
       }
 
-      const eventos = await Evento.listar();
+      const eventos = await EventosModelo.find();
       if (eventos.length === 0) {
         return res.status(404).json({ message: "No hay eventos registrados." });
       }

@@ -10,10 +10,10 @@
     <% if (profesores && profesores.length > 0) { %>
         <% profesores.forEach(profesor => { %>
             <div>
-                <h2><%= profesor.nombre %> <%= profesor.apellido %></h2>
-                <% if (profesor.materias && profesor.materias.length > 0) { %>
+                <h2><%= profesor.profesorAsociado.nombre %> <%= profesor.profesorAsociado.apellido %></h2>
+                <% if (profesor.materiasAsociadas && profesor.materiasAsociadas.length > 0) { %>
                     <ul>
-                        <% profesor.materias.forEach(materia => { %>
+                        <% profesor.materiasAsociadas.forEach(materia => { %>
                             <li>
                                 <strong>Materia:</strong> <%= materia.materia %><br>
                                 <strong>Descripción:</strong> <%= materia.descripcion %>
