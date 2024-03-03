@@ -4,25 +4,26 @@ dayjs.extend(weekOfYear);
 
 import { Profesor } from "../models/ProfesorModelo.js";
 import { Evento } from "../models/EventoModelo.js";
+import { ProfesoresModelo } from '../models-copy/ProfesoresModelo.js';
+import { MateriasModelo } from '../models-copy/MateriasModelo.js';
 
 export class MateriaController {
   static async agregar(req, res) {
     try {
       const { materia, descripcion, profesorId } = req.body;
-      const profesor = Profesor.buscarPorId(profesorId);
+      const profesor = await ProfesoresModelo.findById(profesorId);
 
       if (!profesor) {
         return res.status(404).json({
           message: "Profesor no encontrado, debe existir un profesor",
         });
       }
-      const profesorIdExistente = profesor.id;
-      const materiaNueva = new Materia(
+      const materiaNueva = new MateriasModelo({
         materia,
         descripcion,
-        profesorIdExistente
-      );
-      Materia.agregar(materiaNueva);
+        profesorId: profesor._id
+      })
+      await materiaNueva.save();
       res
         .status(201)
         .json({ message: "Materia agregada con éxito", materiaNueva });
@@ -33,7 +34,8 @@ export class MateriaController {
 
   static async listar(req, res) {
     try {
-      res.status(200).json(Materia.listar());
+      const materias = await MateriasModelo.find();
+      res.status(200).json(materias);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -42,7 +44,7 @@ export class MateriaController {
   static async buscarPorId(req, res) {
     try {
       const { id } = req.params;
-      const materia = Materia.buscarPorId(id);
+      const materia = await MateriasModelo.findById(id);
       if (materia) {
         res.status(200).json(materia);
       } else {
@@ -57,7 +59,13 @@ export class MateriaController {
     try {
       const { id } = req.params;
       const datos = req.body;
-      const materiaActualizada = Materia.actualizar(id, datos);
+      const materiaActualizada = await MateriasModelo.findByIdAndUpdate(
+        id,
+        {
+          materia: datos.materia, descripcion: datos.descripcion, profesorId: datos.profesorId
+        },
+        { new: true }
+      );
       if (materiaActualizada) {
         res.status(200).json({
           message: "Materia actualizada con éxito",
@@ -74,7 +82,7 @@ export class MateriaController {
   static async eliminar(req, res) {
     try {
       const { id } = req.params;
-      const materiaEliminada = Materia.eliminar(id);
+      const materiaEliminada = await MateriasModelo.findByIdAndDelete(id);
       if (materiaEliminada) {
         res.status(200).json({ message: "Materia eliminada con éxito" });
       } else {
@@ -90,36 +98,44 @@ export class MateriaController {
       const { id } = req.params;
       const { nombre, apellido, materia, descripcion, profesorId } = req.body;
 
-      const profesorExistente = await Profesor.buscarPorId(profesorId);
+      const profesorExistente = await ProfesoresModelo.findById(profesorId);
       if (!profesorExistente) {
         return res.status(404).json({ message: "Profesor no encontrado" });
       }
 
       if (nombre && apellido) {
         const datosProfesor = { nombre, apellido };
-        await Profesor.actualizar(profesorId, datosProfesor);
+        await ProfesoresModelo.findByIdAndUpdate(
+          profesorId,
+          datosProfesor,
+          { new: true }
+        );
       } else {
         return res.status(400).json({
           message: "Debe proporcionar nombre y apellido del profesor",
         });
       }
 
-      const materiaExistente = await Materia.buscarPorId(id);
+      const materiaExistente = await MateriasModelo.findById(id);
       if (!materiaExistente) {
         return res.status(404).json({ message: "Materia no encontrada" });
       }
 
       if (materia && descripcion && profesorId) {
         const datosMateria = { materia, descripcion };
-        await Materia.actualizar(id, datosMateria);
+        await MateriasModelo.findByIdAndUpdate(
+          id,
+          datosMateria,
+          { new: true }
+        );
       } else {
         return res.status(400).json({
           message: "Debe proporcionar materia, descripción y profesorId",
         });
       }
 
-      const materiaActualizada = await Materia.buscarPorId(id);
-      const profesorActualizado = await Profesor.buscarPorId(profesorId);
+      const materiaActualizada = await MateriasModelo.findById(id);
+      const profesorActualizado = await ProfesoresModelo.findById(profesorId);
 
       res.status(200).json({
         message: "Asociación de materia a profesor actualizada con éxito",
@@ -182,8 +198,8 @@ export class MateriaController {
         materia: materiaExistente,
         semana: semanaConsulta,
         eventos: eventosFiltrados,
-        fechaInicio: fechaInicioSemana, 
-        fechaFin: fechaFinSemana 
+        fechaInicio: fechaInicioSemana,
+        fechaFin: fechaFinSemana
       });
 
       //res
