@@ -1,12 +1,18 @@
 import { Profesor } from "../models/ProfesorModelo.js";
 import { Materia } from "../models/MateriaModelo.js";
+import { ProfesoresModelo } from '../models-copy/ProfesoresModelo.js';
 
 export class ProfesorController {
+
+  //Actualizado
   static async agregar(req, res) {
     try {
       const { nombre, apellido } = req.body;
-      const profesor = new Profesor(nombre, apellido);
-      Profesor.agregar(profesor);
+
+      const profesor = new ProfesoresModelo({
+        nombre, apellido
+      })
+      await profesor.save();
       res
         .status(201)
         .json({ message: "Profesor agregado con éxito", profesor });
@@ -17,7 +23,7 @@ export class ProfesorController {
 
   static async listar(req, res) {
     try {
-      const profesores = Profesor.listar();
+      const profesores = await ProfesoresModelo.find()
       res.status(200).json(profesores);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -27,7 +33,7 @@ export class ProfesorController {
   static async buscarPorId(req, res) {
     try {
       const { id } = req.params;
-      const profesor = Profesor.buscarPorId(id);
+      const profesor = await ProfesoresModelo.findById(id);
       if (profesor) {
         res.status(200).json(profesor);
       } else {
@@ -42,7 +48,14 @@ export class ProfesorController {
     try {
       const { id } = req.params;
       const datos = req.body;
-      const profesorActualizado = Profesor.actualizar(id, datos);
+      const profesorActualizado = await ProfesoresModelo.findByIdAndUpdate(
+        id,
+        {
+          nombre: datos.nombre,
+          apellido: datos.apellido
+        },
+        { new: true }
+      );
       if (!profesorActualizado) {
         return res.status(404).json({ message: "Profesor no encontrado" });
       }
@@ -60,7 +73,7 @@ export class ProfesorController {
   static async eliminar(req, res) {
     try {
       const { id } = req.params;
-      const profesor = Profesor.eliminar(id);
+      const profesor = await ProfesoresModelo.findByIdAndDelete(id);
       if (!profesor) {
         return res.status(404).json({ message: "Profesor no encontrado" });
       }

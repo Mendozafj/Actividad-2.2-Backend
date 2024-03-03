@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 import weekOfYear from "dayjs/plugin/weekOfYear.js";
 dayjs.extend(weekOfYear);
 
-import { Materia } from "../models/MateriaModelo.js";
 import { Profesor } from "../models/ProfesorModelo.js";
 import { Evento } from "../models/EventoModelo.js";
 

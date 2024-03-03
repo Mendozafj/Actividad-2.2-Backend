@@ -3,9 +3,9 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
-const MateriasSchema = new Schema({
+const EventosSchema = new Schema({
   id: ObjectId,
-  materia: {
+  tipo: {
     type: String,
     required: true,
   },
@@ -13,11 +13,18 @@ const MateriasSchema = new Schema({
     type: String,
     required: true,
   },
-  profesorId: {
+  fecha: {
+    type: Date,
+    required: true,
+  },
+  detalles: {
+    type: String,
+    required: true,
+  },
+  materiaId: {
     type: String,
     required: true,
   }
 });
 
-const MateriasModel = mongoose.model('materias', MateriasSchema)
-module.exports = MateriasModel
+export const EventosModelo = mongoose.model('eventos', EventosSchema);
