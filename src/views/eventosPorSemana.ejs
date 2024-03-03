@@ -1,27 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eventos de la Semana</title>
-    <link rel="stylesheet" href="/path/to/your/css/styles.css">
 </head>
-<body>
-    <h1>Eventos de la Materia: <%= materia.materia %></h1>
-    <h2>Eventos para la semana del <%= fechaInicio %> al <%= fechaFin %>:</h2>
-    <% if(eventos.length > 0) { %>
-        <ul>
-            <% eventos.forEach(evento => { %>
-                <li>
-                    <h3><%= evento.tipo %></h3>
-                    <p>Descripción: <%= evento.descripcion %></p>
-                    <p>Fecha: <%= new Date(evento.fecha).toLocaleDateString() %></p>
-                    <p>Detalles: <%= evento.detalles %></p>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .cuerpo {
+        background-color: rgb(43, 43, 43);
+    }
+
+    .titulo {
+        background-color: rgb(207, 207, 207);
+        width: 100%;
+        height: 10vh;
+
+        font-size: 46px;
+        color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .titulo b {
+        color: rgb(0, 139, 204);
+    }
+
+    .encabezado {
+        margin-top: 25px;
+        margin-left: 25px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+
+
+        background-color: bisque;
+        border-radius: 20px;
+        border: 2px solid black
+    }
+
+    .lista {
+        margin: 25px;
+        padding: 40px;
+        gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        background: rgb(29, 29, 29);
+        border-radius: 25px;
+        list-style: none;
+    }
+
+    .tarjeta {
+        background-color: bisque;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        gap: 5px;
+    }
+
+    .subtitulo {
+        color: rgb(0, 139, 204);
+        font-size: 30px;
+    }
+</style>
+
+<body class="cuerpo">
+    <h1 class="titulo">Eventos de la Materia: <b>
+            <%= materia.materia %>
+        </b>
+    </h1>
+    <h2 class="encabezado">Eventos para la semana del <%= fechaInicio %> al <%= fechaFin %>:</h2>
+    <% if(eventos.length> 0) { %>
+        <ul class="lista">
+            <% eventos.forEach(evento=> { %>
+                <li class="tarjeta">
+                    <h3 class="subtitulo">
+                        <%= evento.tipo %>
+                    </h3>
+                    <p><strong>Descripción:</strong>
+                        <%= evento.descripcion %>
+                    </p>
+                    <p><strong>Fecha:</strong>
+                        <%= new Date(evento.fecha).toLocaleDateString() %>
+                    </p>
+                    <p><strong>Detalles:</strong>
+                        <%= evento.detalles %>
+                    </p>
                 </li>
-            <% }) %>
+                <% }) %>
         </ul>
-    <% } else { %>
-        <p>No hay eventos programados para esta semana.</p>
-    <% } %>
+        <% } else { %>
+            <p>No hay eventos programados para esta semana.</p>
+            <% } %>
 </body>
+
 </html>

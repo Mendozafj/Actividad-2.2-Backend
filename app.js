@@ -17,6 +17,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.json());
 
 app.set('view engine', 'ejs');
+app.use('/public', express.static('public'));
 
 app.set('views', path.resolve(__dirname, 'src', 'views'));
 
